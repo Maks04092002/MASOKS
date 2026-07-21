@@ -1,0 +1,15 @@
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\bin\Debug\net10.0\MasoksTech.Infrastructure.deps.json
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\bin\Debug\net10.0\MasoksTech.Infrastructure.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\bin\Debug\net10.0\MasoksTech.Infrastructure.pdb
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\bin\Debug\net10.0\MasoksTech.Core.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\bin\Debug\net10.0\MasoksTech.Core.pdb
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.AssemblyInfo.cs
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTe.C529B5BA.Up2Date
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\refint\MasoksTech.Infrastructure.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.pdb
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\ref\MasoksTech.Infrastructure.dll

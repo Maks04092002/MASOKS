@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASOKS TECH - Dashboard Administrador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; }
+        .sidebar-brand { background: linear-gradient(135deg, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card-custom { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; }
+        .nav-pills .nav-link { color: #94a3b8; border-radius: 12px; padding: 10px 20px; font-weight: 600; }
+        .nav-pills .nav-link.active { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); }
+        .table-dark-custom { background-color: #1e293b; color: #e2e8f0; }
+        .form-control, .form-select { background: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 10px; }
+        .form-control:focus, .form-select:focus { background: #0f172a; border-color: #6366f1; color: #fff; box-shadow: none; }
+        .badge-admin { background: #f59e0b; color: #000; font-weight: 700; }
+        .badge-cliente { background: #06b6d4; color: #000; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<!-- Topbar Header -->
+<nav class="navbar navbar-expand-lg border-bottom border-secondary border-opacity-25 py-3" style="background: #0f172a;">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-extrabold fs-4 sidebar-brand" href="#"><i class="bi bi-shield-lock-fill me-2"></i>MASOKS TECH ERP</a>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-secondary small d-none d-md-inline"><i class="bi bi-person-circle me-1"></i> Sesión: <strong class="text-white" id="adminUserNombre">Administrador</strong></span>
+            <a href="/login.html" class="btn btn-outline-danger btn-sm rounded-3 px-3"><i class="bi bi-box-arrow-right me-1"></i> Salir</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid px-4 mt-4">
+    
+    <!-- TARJETAS DE MÉTRICAS (KPIs) -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card card-custom p-3 d-flex flex-row align-items-center gap-3">
+                <div class="p-3 bg-primary bg-opacity-20 text-primary rounded-4 fs-3"><i class="bi bi-currency-dollar"></i></div>
+                <div>
+                    <span class="text-secondary small fw-semibold">Ventas Totales</span>
+                    <h3 class="fw-bold m-0 text-success" id="kpiVentas">S/ 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-custom p-3 d-flex flex-row align-items-center gap-3">
+                <div class="p-3 bg-warning bg-opacity-20 text-warning rounded-4 fs-3"><i class="bi bi-box-seam"></i></div>
+                <div>
+                    <span class="text-secondary small fw-semibold">Productos Registrados</span>
+                    <h3 class="fw-bold m-0 text-white" id="kpiProductos">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-custom p-3 d-flex flex-row align-items-center gap-3">
+                <div class="p-3 bg-info bg-opacity-20 text-info rounded-4 fs-3"><i class="bi bi-people"></i></div>
+                <div>
+                    <span class="text-secondary small fw-semibold">Usuarios Activos</span>
+                    <h3 class="fw-bold m-0 text-white" id="kpiUsuarios">0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑAS PRINCIPALES -->
+    <ul class="nav nav-pills mb-4" id="pills-tab">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#sec-inventario"><i class="bi bi-box-seam me-2"></i>Gestión Inventario</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sec-usuarios" onclick="cargarUsuarios()"><i class="bi bi-people me-2"></i>Gestión Usuarios</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sec-ventas" onclick="cargarVentas()"><i class="bi bi-receipt me-2"></i>Reporte de Ventas</button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- 1. INVENTARIO -->
+        <div class="tab-pane fade show active" id="sec-inventario">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card card-custom p-4">
+                        <h5 class="fw-bold text-indigo mb-3"><i class="bi bi-plus-circle me-2"></i>Nuevo Producto</h5>
+                        <form id="formProducto">
+                            <div class="mb-3">
+                                <label class="form-label small text-secondary fw-bold">Nombre</label>
+                                <input type="text" id="pNombre" class="form-control" required placeholder="Ej. Laptop ASUS ROG">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-secondary fw-bold">Precio (S/)</label>
+                                <input type="number" step="0.01" id="pPrecio" class="form-control" required placeholder="0.00">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label small text-secondary fw-bold">Stock Disponible</label>
+                                <input type="number" id="pStock" class="form-control" required placeholder="10">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 fw-bold py-2 rounded-3">Guardar Producto</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card card-custom p-4">
+                        <h5 class="fw-bold mb-3">Catálogo de Productos</h5>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead><tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th class="text-end">Acción</th></tr></thead>
+                                <tbody id="tablaProductos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. USUARIOS -->
+        <div class="tab-pane fade" id="sec-usuarios">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card card-custom p-4">
+                        <h5 class="fw-bold text-info mb-3"><i class="bi bi-person-plus me-2"></i>Crear Usuario</h5>
+                        <form id="formCrearUsuario">
+                            <div class="mb-2"><label class="small text-secondary fw-bold">Nombre Completo</label><input type="text" id="uNombre" class="form-control" required></div>
+                            <div class="mb-2"><label class="small text-secondary fw-bold">Username</label><input type="text" id="uUser" class="form-control" required></div>
+                            <div class="mb-2"><label class="small text-secondary fw-bold">Contraseña</label><input type="password" id="uPass" class="form-control" required></div>
+                            <div class="mb-3">
+                                <label class="small text-secondary fw-bold">Asignar Rol</label>
+                                <select id="uRol" class="form-select">
+                                    <option value="Cliente">Cliente</option>
+                                    <option value="Admin">Administrador</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-info text-dark fw-bold w-100 rounded-3">Registrar Usuario</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card card-custom p-4">
+                        <h5 class="fw-bold mb-3">Usuarios Registrados en Sistema</h5>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead><tr><th>ID</th><th>Nombre</th><th>Usuario</th><th>Rol</th></tr></thead>
+                                <tbody id="tablaUsuarios"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. REPORTES -->
+        <div class="tab-pane fade" id="sec-ventas">
+            <div class="card card-custom p-4">
+                <h5 class="fw-bold text-success mb-3"><i class="bi bi-cash-stack me-2"></i>Historial de Ventas Confirmadas</h5>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th># Orden</th>
+                                <th>Cliente</th>
+                                <th>Monto Total</th>
+                                <th>Forma de Pago</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaVentas"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Cargar Nombre Admin
+    const uLog = JSON.parse(localStorage.getItem('usuarioLogueado') || '{}');
+    if(uLog.nombre) document.getElementById('adminUserNombre').innerText = uLog.nombre;
+
+    // 1. Productos
+    async function cargarProductos() {
+        const res = await fetch('/api/productos');
+        const data = await res.json();
+        document.getElementById('kpiProductos').innerText = data.length;
+        document.getElementById('tablaProductos').innerHTML = data.map(p => `
+            <tr>
+                <td>#${p.id}</td><td class="fw-bold">${p.nombre}</td><td>S/ ${p.precio.toFixed(2)}</td>
+                <td><span class="badge bg-secondary px-3 py-2">${p.stock} un.</span></td>
+                <td class="text-end"><button class="btn btn-sm btn-outline-danger" onclick="eliminarProducto(${p.id})"><i class="bi bi-trash"></i></button></td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('formProducto').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await fetch('/api/productos', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                nombre: document.getElementById('pNombre').value,
+                precio: parseFloat(document.getElementById('pPrecio').value),
+                stock: parseInt(document.getElementById('pStock').value)
+            })
+        });
+        document.getElementById('formProducto').reset();
+        cargarProductos();
+    });
+
+    async function eliminarProducto(id) {
+        if(confirm('¿Eliminar producto?')) {
+            await fetch(`/api/productos/${id}`, { method: 'DELETE' });
+            cargarProductos();
+        }
+    }
+
+    // 2. Usuarios
+    async function cargarUsuarios() {
+        const res = await fetch('/api/auth/usuarios');
+        const data = await res.json();
+        document.getElementById('kpiUsuarios').innerText = data.length;
+        document.getElementById('tablaUsuarios').innerHTML = data.map(u => `
+            <tr>
+                <td>#${u.id}</td><td>${u.nombreCompleto}</td><td class="text-info">${u.username}</td>
+                <td><span class="badge ${u.rol === 'Admin' ? 'badge-admin' : 'badge-cliente'} px-3 py-2">${u.rol}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('formCrearUsuario').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const res = await fetch('/api/auth/registro', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                nombreCompleto: document.getElementById('uNombre').value,
+                username: document.getElementById('uUser').value,
+                password: document.getElementById('uPass').value,
+                rol: document.getElementById('uRol').value
+            })
+        });
+        const data = await res.json();
+        alert(data.mensaje);
+        document.getElementById('formCrearUsuario').reset();
+        cargarUsuarios();
+    });
+
+    // 3. Ventas (con columna Forma de Pago)
+    async function cargarVentas() {
+        const res = await fetch('/api/ordenes');
+        const data = await res.json();
+        
+        let totalSumado = 0;
+        document.getElementById('tablaVentas').innerHTML = data.map(v => {
+            totalSumado += v.totalCobrado;
+            return `
+                <tr>
+                    <td class="fw-bold text-warning">ORD-${v.id}</td>
+                    <td>${v.nombreCliente}</td>
+                    <td class="text-success fw-bold fs-6">S/ ${v.totalCobrado.toFixed(2)}</td>
+                    <td><span class="badge bg-info text-dark px-3 py-2"><i class="bi bi-wallet2 me-1"></i>${v.metodoPago || 'Efectivo'}</span></td>
+                    <td><span class="badge bg-success px-3 py-2"><i class="bi bi-check-circle me-1"></i>${v.estadoPago}</span></td>
+                    <td class="text-secondary small">${new Date(v.fechaCompra).toLocaleString()}</td>
+                </tr>
+            `;
+        }).join('');
+        
+        document.getElementById('kpiVentas').innerText = `S/ ${totalSumado.toFixed(2)}`;
+    }
+
+    // Cargar métricas al abrir
+    cargarProductos();
+    cargarVentas();
+    cargarUsuarios();
+</script>
+</body>
+</html>

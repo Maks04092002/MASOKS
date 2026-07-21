@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASOKS TECH - Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #0b1329; color: #f8fafc; min-height: 100vh; }
+        .navbar-custom { background: #0f172a; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .product-card {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+            border-color: #6366f1;
+        }
+        .price-tag { color: #22c55e; font-weight: 800; font-size: 1.25rem; }
+        .btn-tech {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+        .btn-tech:hover { color: #fff; opacity: 0.9; }
+        .modal-content { background: #1e293b; color: #fff; border-radius: 20px; }
+        .product-img {
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    // Validación segura de sesión
+    let usuarioLogueado = null;
+    try {
+        usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
+    } catch (e) {
+        localStorage.removeItem('usuarioLogueado');
+    }
+
+    if (!usuarioLogueado) {
+        window.location.href = '/login.html';
+    }
+</script>
+
+<!-- Barra Superior -->
+<nav class="navbar navbar-expand-lg navbar-custom py-3 sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-extrabold text-white fs-4" href="#">
+            <i class="bi bi-cpu-fill text-indigo me-2"></i>MASOKS TECH
+        </a>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-secondary small d-none d-md-inline">
+                <i class="bi bi-person-fill text-info"></i> Bienvenido, <strong class="text-white" id="nombreCliente">Cliente</strong>
+            </span>
+            <button class="btn btn-outline-light position-relative rounded-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                <i class="bi bi-cart-check-fill me-1"></i> Carrito
+                <span id="cantCarrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+            </button>
+            <button class="btn btn-outline-danger btn-sm rounded-3" onclick="cerrarSesion()">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Banner y Catálogo -->
+<div class="container mt-4">
+    <div class="p-4 p-md-5 rounded-4 mb-4 text-center" style="background: linear-gradient(135deg, #1e1b4b, #312e81);">
+        <h1 class="fw-extrabold mb-2">Tecnología de Vanguardia a tu Alcance</h1>
+        <p class="text-secondary m-0">Explora componentes, equipos y laptops certificadas con garantía oficial MASOKS TECH.</p>
+    </div>
+
+    <h4 class="fw-bold mb-4"><i class="bi bi-grid-fill me-2 text-indigo"></i>Catálogo Disponible</h4>
+    <div class="row g-4" id="contenedorProductos">
+        <div class="text-center py-4 text-secondary"><span class="spinner-border spinner-border-sm me-2"></span> Cargando catálogo...</div>
+    </div>
+</div>
+
+<!-- Offcanvas del Carrito -->
+<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasCarrito" style="background-color: #0f172a !important;">
+    <div class="offcanvas-header border-bottom border-secondary">
+        <h5 class="offcanvas-title fw-bold"><i class="bi bi-cart3 me-2"></i>Tu Carrito de Compras</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+        <div id="elementosCarrito" class="flex-grow-1">
+            <p class="text-secondary text-center mt-5">El carrito está vacío</p>
+        </div>
+        <div class="border-top border-secondary pt-3">
+            <!-- Selección de Forma de Pago -->
+            <div class="mb-3">
+                <label for="selectMetodoPago" class="form-label small text-secondary fw-semibold"><i class="bi bi-wallet2 me-1"></i>Forma de Pago</label>
+                <select id="selectMetodoPago" class="form-select bg-dark text-white border-secondary">
+                    <option value="Tarjeta de Crédito/Débito">💳 Tarjeta de Crédito/Débito</option>
+                    <option value="Yape / Plin">📱 Yape / Plin</option>
+                    <option value="Transferencia Bancaria">🏦 Transferencia Bancaria</option>
+                    <option value="Efectivo" selected>💵 Efectivo</option>
+                </select>
+            </div>
+            
+            <div class="d-flex justify-content-between fs-5 fw-bold mb-3">
+                <span>Total:</span>
+                <span id="totalCarrito" class="text-success">S/ 0.00</span>
+            </div>
+            <button class="btn btn-tech w-100 py-3" onclick="procesarCompra()">
+                <i class="bi bi-credit-card-fill me-2"></i>Confirmar y Generar Comprobante
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Comprobante -->
+<div class="modal fade" id="modalComprobante" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i>¡Compra Exitosa!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body border rounded-3 p-3 bg-dark bg-opacity-50" id="ticketDetalle">
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-outline-light w-100" onclick="window.print()"><i class="bi bi-printer me-2"></i>Imprimir / Guardar Comprobante</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let carrito = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const elemNombre = document.getElementById('nombreCliente');
+        if (elemNombre && usuarioLogueado) {
+            elemNombre.innerText = usuarioLogueado.nombre || 'Cliente';
+        }
+        cargarCatalogo();
+    });
+
+    async function cargarCatalogo() {
+        const cont = document.getElementById('contenedorProductos');
+        try {
+            const res = await fetch('/api/productos');
+            if (!res.ok) throw new Error('Error en API');
+            const productos = await res.json();
+            
+            if(!productos || productos.length === 0) {
+                cont.innerHTML = `<p class="text-secondary">No hay productos en stock por el momento.</p>`;
+                return;
+            }
+
+            cont.innerHTML = productos.map(p => {
+                // Paso 2: Asignación de URL de la imagen o placeholder si no existe
+                const imagenUrl = (p.imagenUrl && p.imagenUrl.trim() !== '') 
+                    ? p.imagenUrl 
+                    : 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=400&auto=format&fit=crop';
+
+                return `
+                    <div class="col-md-4 col-lg-3">
+                        <div class="card product-card h-100 p-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <!-- Paso 2: Renderizado de la etiqueta <img> en la tarjeta -->
+                                <div class="text-center mb-3 bg-dark rounded-3 overflow-hidden">
+                                    <img src="${imagenUrl}" 
+                                         alt="${p.nombre || 'Producto'}" 
+                                         class="product-img" 
+                                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=400';">
+                                </div>
+                                <h6 class="fw-bold mb-2">${p.nombre || 'Producto'}</h6>
+                                <span class="badge bg-secondary mb-2">Stock: ${p.stock ?? 0} un.</span>
+                            </div>
+                            <div>
+                                <div class="price-tag mb-3">S/ ${(p.precio || 0).toFixed(2)}</div>
+                                <button class="btn btn-tech w-100 py-2" onclick="agregarAlCarrito(${p.id}, '${p.nombre}', ${p.precio})">
+                                    <i class="bi bi-cart-plus me-1"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch(e) {
+            console.error(e);
+            cont.innerHTML = `<p class="text-secondary">Aún no hay productos disponibles o hubo un detalle al conectar con la base de datos.</p>`;
+        }
+    }
+
+    function agregarAlCarrito(id, nombre, precio) {
+        carrito.push({ id, nombre, precio });
+        actualizarCarritoUI();
+    }
+
+    function actualizarCarritoUI() {
+        document.getElementById('cantCarrito').innerText = carrito.length;
+        const cont = document.getElementById('elementosCarrito');
+        let total = 0;
+
+        if(carrito.length === 0) {
+            cont.innerHTML = `<p class="text-secondary text-center mt-5">El carrito está vacío</p>`;
+            document.getElementById('totalCarrito').innerText = `S/ 0.00`;
+            return;
+        }
+
+        cont.innerHTML = carrito.map((item, index) => {
+            total += item.precio;
+            return `
+                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                    <div>
+                        <strong class="d-block small">${item.nombre}</strong>
+                        <span class="text-success small">S/ ${item.precio.toFixed(2)}</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="eliminarDelCarrito(${index})"><i class="bi bi-trash"></i></button>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('totalCarrito').innerText = `S/ ${total.toFixed(2)}`;
+    }
+
+    function eliminarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarCarritoUI();
+    }
+
+    async function procesarCompra() {
+        if (carrito.length === 0) {
+            alert('El carrito está vacío.');
+            return;
+        }
+
+        const total = carrito.reduce((sum, i) => sum + i.precio, 0);
+        const metodoPago = document.getElementById('selectMetodoPago').value || 'Efectivo';
+
+        try {
+            const res = await fetch('/api/ordenes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nombreCliente: usuarioLogueado ? usuarioLogueado.nombre : 'Cliente',
+                    totalCobrado: total,
+                    metodoPago: metodoPago,
+                    estadoPago: 'PAGADO'
+                })
+            });
+
+            if (res.ok) {
+                const ordenGuardada = await res.json();
+                
+                document.getElementById('ticketDetalle').innerHTML = `
+                    <div class="text-center mb-3">
+                        <h6 class="fw-bold mb-0">MASOKS TECH S.A.C.</h6>
+                        <small class="text-secondary">RUC: 20601234567</small><br>
+                        <small class="text-secondary">Comprobante de Pago Electrónico</small>
+                    </div>
+                    <hr class="border-secondary">
+                    <p class="small mb-1"><strong>N° Orden:</strong> ORD-${ordenGuardada.id || '001'}</p>
+                    <p class="small mb-1"><strong>Cliente:</strong> ${usuarioLogueado ? usuarioLogueado.nombre : 'Cliente'}</p>
+                    <p class="small mb-1"><strong>Forma de Pago:</strong> <span class="badge bg-info text-dark">${metodoPago}</span></p>
+                    <p class="small mb-3"><strong>Fecha:</strong> ${new Date().toLocaleString()}</p>
+                    <hr class="border-secondary">
+                    ${carrito.map(i => `<div class="d-flex justify-content-between small"><span>${i.nombre}</span><span>S/ ${i.precio.toFixed(2)}</span></div>`).join('')}
+                    <hr class="border-secondary">
+                    <div class="d-flex justify-content-between fw-bold fs-6">
+                        <span>TOTAL PAGADO:</span>
+                        <span class="text-success">S/ ${total.toFixed(2)}</span>
+                    </div>
+                `;
+
+                carrito = [];
+                actualizarCarritoUI();
+                bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasCarrito')).hide();
+                new bootstrap.Modal(document.getElementById('modalComprobante')).show();
+            }
+        } catch(e) {
+            alert('Error al registrar la orden.');
+        }
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('usuarioLogueado');
+        window.location.href = '/login.html';
+    }
+</script>
+</body>
+</html>

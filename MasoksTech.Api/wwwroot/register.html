@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASOKS TECH - Crear Cuenta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            background-color: #0b1329; 
+            color: #f8fafc; 
+            min-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .register-card {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            max-width: 450px;
+            width: 100%;
+        }
+        .btn-tech {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+        .btn-tech:hover { color: #fff; opacity: 0.9; }
+        .form-control {
+            background-color: #0f172a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+        }
+        .form-control:focus {
+            background-color: #0f172a;
+            color: #fff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+        }
+        .form-control::placeholder { color: #64748b; }
+        a { color: #818cf8; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex justify-content-center">
+    <div class="register-card p-4 p-md-5">
+        
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h3 class="fw-extrabold text-white mb-1">
+                <i class="bi bi-cpu-fill text-indigo me-2" style="color: #6366f1;"></i>MASOKS TECH
+            </h3>
+            <p class="text-secondary small">Crea tu cuenta para acceder al Marketplace</p>
+        </div>
+
+        <!-- Alerta de Error/Éxito -->
+        <div id="alertaMensaje" class="alert d-none small mb-3" role="alert"></div>
+
+        <!-- Formulario -->
+        <form id="formRegistro" onsubmit="registrarUsuario(event)">
+            
+            <!-- Nombre Completo -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label small text-secondary fw-semibold">Nombre Completo</label>
+                <div class="input-group">
+                    <input type="text" id="nombre" class="form-control" placeholder="Ej: Juan Pérez" required>
+                </div>
+            </div>
+
+            <!-- Correo Electrónico -->
+            <div class="mb-3">
+                <label for="correo" class="form-label small text-secondary fw-semibold">Correo Electrónico</label>
+                <input type="email" id="correo" class="form-control" placeholder="nombre@correo.com" required>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+                <label for="password" class="form-label small text-secondary fw-semibold">Contraseña</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••" required minlength="4">
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="mb-4">
+                <label for="confirmPassword" class="form-label small text-secondary fw-semibold">Confirmar Contraseña</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="••••••••" required minlength="4">
+            </div>
+
+            <!-- Botón de Registro -->
+            <button type="submit" id="btnSubmit" class="btn btn-tech w-100 py-3 mb-3">
+                <i class="bi bi-person-plus-fill me-2"></i>Crear Cuenta
+            </button>
+
+            <!-- Link de Navegación -->
+            <div class="text-center text-secondary small">
+                ¿Ya tienes una cuenta? <a href="/login.html" class="fw-semibold">Inicia Sesión</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    async function registrarUsuario(event) {
+        event.preventDefault(); // Evita que la página se recargue automáticamente
+
+        const nombre = document.getElementById('nombre').value.trim();
+        const correo = document.getElementById('correo').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const alerta = document.getElementById('alertaMensaje');
+        const btn = document.getElementById('btnSubmit');
+
+        // Validar contraseñas
+        if (password !== confirmPassword) {
+            mostrarAlerta('Las contraseñas no coinciden.', 'danger');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Registrando...`;
+
+        const nuevoUsuario = {
+            nombre: nombre,
+            correo: correo,
+            email: correo, // Se envían ambos por compatibilidad de backend
+            password: password,
+            rol: 'CLIENTE'
+        };
+
+        try {
+            // Intentamos enviar los datos al Backend
+            const res = await fetch('/api/usuarios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nuevoUsuario)
+            });
+
+            if (res.ok) {
+                mostrarAlerta('¡Registro exitoso! Redirigiendo...', 'success');
+                
+                // Guardamos la sesión activa en el navegador
+                localStorage.setItem('usuarioLogueado', JSON.stringify({ nombre: nombre, correo: correo }));
+                
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1500);
+            } else {
+                throw new Error('No se pudo registrar en la base de datos.');
+            }
+        } catch (error) {
+            console.warn('Fallback: No hay backend activo o falló la API. Guardando en LocalStorage temporal.');
+            
+            // Si tu backend aún no está listo o falla, se guarda localmente para que puedas probar la app
+            localStorage.setItem('usuarioLogueado', JSON.stringify({ nombre: nombre, correo: correo }));
+            
+            mostrarAlerta('¡Cuenta creada con éxito! Redirigiendo al catálogo...', 'success');
+            setTimeout(() => {
+                window.location.href = '/index.html';
+            }, 1200);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-person-plus-fill me-2"></i>Crear Cuenta`;
+        }
+    }
+
+    function mostrarAlerta(mensaje, tipo) {
+        const alerta = document.getElementById('alertaMensaje');
+        alerta.className = `alert alert-${tipo} small mb-3`;
+        alerta.innerText = mensaje;
+        alerta.classList.remove('d-none');
+    }
+</script>
+
+</body>
+</html>

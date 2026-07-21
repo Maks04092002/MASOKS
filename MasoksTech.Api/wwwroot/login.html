@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASOKS TECH - Acceso Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a, #020617);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f8fafc;
+        }
+        .login-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.2);
+            width: 100%;
+            max-width: 440px;
+        }
+        .brand-icon {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #6366f1;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+        .form-control::placeholder { color: #94a3b8; }
+        .btn-primary-tech {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-primary-tech:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.5);
+        }
+        .modal-content {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container p-3">
+    <div class="login-card mx-auto p-4 p-md-5">
+        <div class="text-center mb-4">
+            <div class="brand-icon mb-3">
+                <i class="bi bi-cpu-fill fs-1 text-white"></i>
+            </div>
+            <h3 class="fw-extrabold tracking-tight mb-1">MASOKS TECH</h3>
+            <p class="text-secondary small">Inicia sesión para acceder a tu plataforma</p>
+        </div>
+
+        <form id="formLogin">
+            <div class="mb-3">
+                <label class="form-label small text-uppercase fw-bold text-secondary">Usuario</label>
+                <div class="input-group">
+                    <input type="text" id="usuario" class="form-control" placeholder="Ej. juanperez" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small text-uppercase fw-bold text-secondary">Contraseña</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary-tech text-white w-100 mb-3">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
+            </button>
+        </form>
+
+        <div class="text-center pt-3 border-top border-secondary border-opacity-25">
+            <p class="small text-secondary mb-2">¿Aún no tienes una cuenta de cliente?</p>
+            <button class="btn btn-outline-light w-100 rounded-3 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalRegistro">
+                <i class="bi bi-person-plus-fill me-1"></i> Registrarse como Cliente
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Registro de Usuario -->
+<div class="modal fade" id="modalRegistro" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-white p-2">
+            <div class="modal-header border-bottom border-secondary border-opacity-25">
+                <h5 class="modal-title fw-bold text-indigo"><i class="bi bi-person-vcard me-2"></i>Crear Cuenta de Cliente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistro">
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-bold">Nombre Completo</label>
+                        <input type="text" id="regNombre" class="form-control" placeholder="Ej. Juan Carlos Pérez" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary fw-bold">Nombre de Usuario</label>
+                        <input type="text" id="regUser" class="form-control" placeholder="Ej. juanperez" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small text-secondary fw-bold">Contraseña</label>
+                        <input type="password" id="regPass" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary-tech text-white w-100 fw-bold py-2">
+                        <i class="bi bi-check-circle-fill me-2"></i> Finalizar Registro
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Login
+    document.getElementById('formLogin').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: document.getElementById('usuario').value,
+                    password: document.getElementById('password').value
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                localStorage.setItem('usuarioLogueado', JSON.stringify(data));
+                if (data.rol === 'Admin') {
+                    window.location.href = '/admin.html';
+                } else {
+                    window.location.href = '/index.html';
+                }
+            } else {
+                alert(data.mensaje || 'Credenciales incorrectas');
+            }
+        } catch (err) {
+            alert('Error de conexión con la API.');
+        }
+    });
+
+    // Registro
+    document.getElementById('formRegistro').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const res = await fetch('/api/auth/registro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nombreCompleto: document.getElementById('regNombre').value,
+                username: document.getElementById('regUser').value,
+                password: document.getElementById('regPass').value,
+                rol: "Cliente"
+            })
+        });
+
+        const data = await res.json();
+        alert(data.mensaje);
+        if (res.ok) location.reload();
+    });
+</script>
+</body>
+</html>

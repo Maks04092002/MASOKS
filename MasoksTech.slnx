@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MasoksTech.Api/MasoksTech.Api.csproj" />
+  <Project Path="MasoksTech.Core/MasoksTech.Core.csproj" />
+  <Project Path="MasoksTech.Infrastructure/MasoksTech.Infrastructure.csproj" />
+  <Project Path="MasoksTech.Specs/MasoksTech.Specs.csproj" />
+</Solution>

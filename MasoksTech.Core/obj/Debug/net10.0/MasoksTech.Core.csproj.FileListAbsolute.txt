@@ -1,0 +1,11 @@
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\bin\Debug\net10.0\MasoksTech.Core.deps.json
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\bin\Debug\net10.0\MasoksTech.Core.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\bin\Debug\net10.0\MasoksTech.Core.pdb
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.AssemblyInfoInputs.cache
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.AssemblyInfo.cs
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\refint\MasoksTech.Core.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.pdb
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\ref\MasoksTech.Core.dll
