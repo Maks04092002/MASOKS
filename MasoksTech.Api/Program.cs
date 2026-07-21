@@ -2,15 +2,7 @@ using MasoksTech.Core;
 using MasoksTech.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-// --- CORRECCIÓN ENOTIFY / LINUX RENDER ---
 var builder = WebApplication.CreateBuilder(args);
-
-// Desactivamos la recarga en caliente (reloadOnChange) para evitar saturar descriptores de archivo
-builder.Configuration.Sources.Clear();
-builder.Configuration
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: false)
-    .AddEnvironmentVariables();
 
 // 1. Configuración de la Base de Datos PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -54,17 +46,20 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// --- HABILITAR SWAGGER TAMBIÉN EN PRODUCCIÓN (RENDER) ---
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+// Configuración del entorno de desarrollo (Swagger)
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MasoksTech API v1");
-    c.RoutePrefix = "swagger"; // Permite entrar en https://tu-app.onrender.com/swagger
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // --- 4. HABILITAR PÁGINAS WEB (wwwroot) ---
+// UseDefaultFiles SIEMPRE va antes de UseStaticFiles
 app.UseDefaultFiles(); 
 app.UseStaticFiles();
+
+// Se deshabilita la redirección forzada a HTTPS para evitar bloqueos en http://localhost:5107
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
