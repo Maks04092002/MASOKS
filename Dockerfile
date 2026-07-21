@@ -5,7 +5,7 @@ WORKDIR /app
 # Copiar todo el proyecto
 COPY . .
 
-# Restaurar y publicar apuntando a tu carpeta real MasoksTech.Api
+# Restaurar y publicar
 RUN dotnet restore "MasoksTech.Api/MasoksTech.Api.csproj"
 RUN dotnet publish "MasoksTech.Api/MasoksTech.Api.csproj" -c Release -o /app/out
 
@@ -16,5 +16,7 @@ COPY --from=build /app/out .
 
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
+# esta línea desactiva el FileWatcher que provocó el error:
+ENV DOTNET_USE_POLLING_FILE_WATCHER=false
 
 ENTRYPOINT ["dotnet", "MasoksTech.Api.dll"]
