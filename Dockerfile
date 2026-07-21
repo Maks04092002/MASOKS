@@ -16,7 +16,7 @@ COPY --from=build /app/out .
 
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
-# esta línea desactiva el FileWatcher que provocó el error:
+# ESTA ES LA LÍNEA NUEVA QUE DEBES AGREGAR:
 ENV DOTNET_USE_POLLING_FILE_WATCHER=false
 
 ENTRYPOINT ["dotnet", "MasoksTech.Api.dll"]
