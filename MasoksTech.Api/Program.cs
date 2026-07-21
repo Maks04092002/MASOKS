@@ -1,39 +1,70 @@
+using MasoksTech.Core;
 using MasoksTech.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
+// --- CORRECCIÓN ENOTIFY / LINUX RENDER ---
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de la Base de Datos PostgreSQL
+// Desactivamos la recarga en caliente (reloadOnChange) para evitar saturar descriptores de archivo
+builder.Configuration.Sources.Clear();
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: false)
+    .AddEnvironmentVariables();
+
+// 1. Configuración de la Base de Datos PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Agregar servicios al contenedor
+// 2. Agregar servicios de Controladores y Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); // Generador de OpenAPI/Swagger
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// --- 1. CREACIÓN AUTOMÁTICA DE TABLAS EN POSTGRESQL ---
+// --- 3. AUTO-CREACIÓN DE TABLAS Y USUARIOS SEMILLA (SEED) ---
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    
+    // Crea la base de datos y sus tablas automáticamente en PostgreSQL
     dbContext.Database.EnsureCreated();
+
+    // Inserta los usuarios iniciales de prueba si la tabla está vacía
+    if (!dbContext.Usuarios.Any())
+    {
+        dbContext.Usuarios.AddRange(
+            new Usuario 
+            { 
+                Username = "admin", 
+                Password = "123", 
+                NombreCompleto = "Administrador del Sistema", 
+                Rol = "Admin" 
+            },
+            new Usuario 
+            { 
+                Username = "cliente", 
+                Password = "123", 
+                NombreCompleto = "Cliente de Prueba", 
+                Rol = "Cliente" 
+            }
+        );
+        dbContext.SaveChanges();
+    }
 }
 
-// Configurar el pipeline de solicitudes HTTP (Middleware)
-if (app.Environment.IsDevelopment())
+// --- HABILITAR SWAGGER TAMBIÉN EN PRODUCCIÓN (RENDER) ---
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MasoksTech API v1");
+    c.RoutePrefix = "swagger"; // Permite entrar en https://tu-app.onrender.com/swagger
+});
 
-// --- 2. HABILITAR ARCHIVOS ESTÁTICOS (DEBE IR ANTES DE AUTORIZACIÓN) ---
-app.UseDefaultFiles(); // Busca index.html o login.html automáticamente
-app.UseStaticFiles();  // Sirve los archivos de la carpeta wwwroot
-
-// NOTA: Se comenta app.UseHttpsRedirection() para evitar el bloqueo en http://localhost:5107
-// app.UseHttpsRedirection();
+// --- 4. HABILITAR PÁGINAS WEB (wwwroot) ---
+app.UseDefaultFiles(); 
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
