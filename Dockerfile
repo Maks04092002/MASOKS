@@ -5,7 +5,7 @@ WORKDIR /app
 # Copiar todo el proyecto
 COPY . .
 
-# Restaurar y compilar apuntando a tu proyecto real (MasoksTech.Api)
+# Restaurar y publicar apuntando a tu carpeta real MasoksTech.Api
 RUN dotnet restore "MasoksTech.Api/MasoksTech.Api.csproj"
 RUN dotnet publish "MasoksTech.Api/MasoksTech.Api.csproj" -c Release -o /app/out
 
