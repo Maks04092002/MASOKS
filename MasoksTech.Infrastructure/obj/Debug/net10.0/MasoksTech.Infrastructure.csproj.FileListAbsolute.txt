@@ -13,3 +13,4 @@ C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.
 C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\refint\MasoksTech.Infrastructure.dll
 C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.pdb
 C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\ref\MasoksTech.Infrastructure.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Infrastructure\obj\Debug\net10.0\MasoksTech.Infrastructure.sourcelink.json

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MasoksTech.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+628b81690628d619c4cfacd0a92786713bcaf078")]
 [assembly: System.Reflection.AssemblyProductAttribute("MasoksTech.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MasoksTech.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

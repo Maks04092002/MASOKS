@@ -132,3 +132,4 @@ C:\Users\ASUS\MasoksTech\MasoksTech.Api\obj\Debug\net10.0\compressed\cou3v62qpm-
 C:\Users\ASUS\MasoksTech\MasoksTech.Api\obj\Debug\net10.0\compressed\0x0cmli3kg-{0}-00kccmzvt4-00kccmzvt4.gz
 C:\Users\ASUS\MasoksTech\MasoksTech.Api\obj\Debug\net10.0\compressed\kqj7sl8e02-{0}-ho6tf1incc-ho6tf1incc.gz
 C:\Users\ASUS\MasoksTech\MasoksTech.Api\obj\Debug\net10.0\compressed\de8smpimzc-{0}-donf1byng1-donf1byng1.gz
+C:\Users\ASUS\MasoksTech\MasoksTech.Api\obj\Debug\net10.0\MasoksTech.Api.sourcelink.json

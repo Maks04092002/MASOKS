@@ -9,3 +9,4 @@ C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.dll
 C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\refint\MasoksTech.Core.dll
 C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.pdb
 C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\ref\MasoksTech.Core.dll
+C:\Users\ASUS\MasoksTech\MasoksTech.Core\obj\Debug\net10.0\MasoksTech.Core.sourcelink.json
