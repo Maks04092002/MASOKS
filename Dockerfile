@@ -1,13 +1,13 @@
-# 1. Imagen base SDK de .NET 10 para compilar
+# 1. Imagen SDK de .NET 10 para compilar
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
-# Copiar todo el código
+# Copiar todo el proyecto
 COPY . .
 
-# Restaurar y compilar
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/out
+# Restaurar y compilar apuntando a tu proyecto real (MasoksTech.Api)
+RUN dotnet restore "MasoksTech.Api/MasoksTech.Api.csproj"
+RUN dotnet publish "MasoksTech.Api/MasoksTech.Api.csproj" -c Release -o /app/out
 
 # 2. Imagen final para ejecutar
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
